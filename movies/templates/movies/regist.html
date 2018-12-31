@@ -6,10 +6,12 @@
 </head>
 <body>
 
-	<form action="{% url 'movies:regist' %}" method="POST">
+	<form action="{% url 'movies:RegistSearch' %}" method="POST">
 		{% csrf_token %} {{ SearchForm }} <input type='submit' value='検索' />
 	</form>
 	<hr>
-	{{ result }}
+	<form action="{% url 'movies:RegistSearch' %}" method="POST">
+		{{ RegistForm }}
+	</form>
 </body>
 </html>

@@ -8,8 +8,6 @@ import urllib
 
 from bs4 import BeautifulSoup
 
-from movies.models import TitleSearchResult
-
 
 class SyoboCalProcess:
     
@@ -24,7 +22,6 @@ class SyoboCalProcess:
         soup = BeautifulSoup(res,"html.parser")
         
         list = []
-        result = TitleSearchResult()
         
         for a in soup.find_all(href=re.compile("tid")):
             
@@ -32,6 +29,6 @@ class SyoboCalProcess:
             
             list.append(t)
     
-        result.list = tuple(list)
-        
-        return result
+        print (list)
+    
+        return list
