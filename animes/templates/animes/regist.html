@@ -5,13 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	<form action="{% url 'movies:RegistSearch' %}" method="POST">
+	<form action="{% url 'animes:ExecSearch' %}" method="POST">
 		{% csrf_token %} {{ SearchForm }} <input type='submit' value='検索' />
 	</form>
 	<hr>
-	<form action="{% url 'movies:RegistSearch' %}" method="POST">
-		{{ RegistForm }}
+	<form action="{% url 'animes:ExecRegist' %}" method="POST">
+		{% csrf_token %} {{ RegistForm }} <input type='submit' value='登録' />
 	</form>
 </body>
 </html>
