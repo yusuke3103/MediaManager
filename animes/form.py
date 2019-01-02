@@ -1,6 +1,7 @@
 from django import forms
 
-from animes.models import Title
+from animes.models import Title, SubTitle
+
 
 class TitleListForm(forms.Form):
     class Meta:
@@ -16,3 +17,8 @@ class TitleResultForm(forms.Form):
     class Meta:
         model = Title
         fields = ('tid','title','firstYear','firstMonth','firstEndYear','firstEndMonth','comment')
+
+class DetailForm(forms.Form):
+    class Meta:
+        model = SubTitle
+        fields = {'rno','subtitle'}

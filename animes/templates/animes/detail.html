@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<div>
+	<hr>
+	<a href="{% url 'animes:GetSubTitles' %}?tid={{ tid }}">サブタイトル取得</a>
+	<table border="1">
+		<thead>
+			<tr>
+				<td>話数</td>
+				<td>サブタイトル</td>
+				<td>再生</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in list %}
+			<tr>
+				<td>{{ item.rno }}</td>
+				<td>{{ item.subtitle }}</td>
+				<td></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

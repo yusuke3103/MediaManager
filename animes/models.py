@@ -13,7 +13,7 @@ class Title(models.Model):
 
 class SubTitle(models.Model):
     tid = models.CharField(max_length=4,blank=False)
-    rno = models.IntegerField()
+    rno = models.CharField(max_length=3,blank=False)
     subtitle = models.CharField(max_length=100)
     
     class Meta:

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
+from scipy.spatial.distance import dice
 
-from animes.form import SyoboCalTitleSearchForm, TitleResultForm, TitleListForm
-from animes.models import Title
+from animes.form import SyoboCalTitleSearchForm, TitleResultForm, TitleListForm, DetailForm
+from animes.models import Title, SubTitle
 from process.SyoboCalProcess import SyoboCalProcess
 
 
@@ -23,15 +24,14 @@ def execSearch(request):
         regist = TitleResultForm
         
         regist.base_fields['pulldown'].choices = []
-        for obj in SyoboCalProcess.TitleSearch(search.data['keyword']):
+        for obj in SyoboCalProcess().TitleSearch(search.data['keyword']):
             regist.base_fields['pulldown'].choices.append(obj)
 #         regist.base_fields['pulldown'].choices = SyoboCalProcess.TitleSearch(search.data['keyword'])
         return render(request, 'animes/regist.html',{'SearchForm':search, 'RegistForm':regist})
 
 def execRegist(request):    
     regist = TitleResultForm(request.POST)
-    data = SyoboCalProcess.GetTitleFull(regist.data['pulldown'])
-    
+    data = SyoboCalProcess().GetTitleFull(regist.data['pulldown'])
 
     Title(
         tid=data['TID'],
@@ -44,3 +44,22 @@ def execRegist(request):
     ).save()
     
     return redirect('animes:index')
+
+def openDetail(request):
+    list = SubTitle.objects.filter(tid=request.GET['tid'])
+    return render(request, 'animes/detail.html', {'list' : list, 'tid': request.GET['tid']})
+
+def UpdateTitle(request):
+      
+    dic = SyoboCalProcess().GetSubTitles(tid=request.GET['tid'])
+      
+    for key in dic:
+          
+        SubTitle.objects.update_or_create(
+            tid = request.GET['tid'],
+            rno = '{:02}'.format(int(key)),
+            subtitle = dic[key]
+        )
+
+    list = SubTitle.objects.all().filter(tid=request.GET['tid'])
+    return render(request, 'animes/detail.html', {'list' : list, 'tid': request.GET['tid']})   
