@@ -3,6 +3,7 @@ Created on Dec 30, 2018
 
 @author: Yusuke
 '''
+import json
 import re
 import urllib
 
@@ -32,3 +33,17 @@ class SyoboCalProcess:
         print (list)
     
         return list
+
+    def GetTitleFull(self):
+        BASE_URL = 'http://cal.syoboi.jp/json.php?Req=TitleFull&TID=keyword'
+        url = BASE_URL.replace("keyword", self)
+        res = urllib.request.urlopen(url)
+        
+        json_dict = json.loads(res.read())
+        
+        
+        result = {}
+        for key in json_dict['Titles'][self]:
+            result[key] = json_dict['Titles'][self][key]
+            
+        return result

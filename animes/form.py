@@ -1,8 +1,18 @@
 from django import forms
 
+from animes.models import Title
 
+class TitleListForm(forms.Form):
+    class Meta:
+        model = Title
+        fields = ('tid','title','firstYear','firstMonth','firstEndYear','firstEndMonth','comment')
+    
 class SyoboCalTitleSearchForm(forms.Form):
     keyword = forms.CharField(max_length=100)
     
-class TitleRegistForm(forms.Form):
-    pulldown = forms.ChoiceField(widget=forms.RadioSelect, choices=[(0,'----'),(0,'----'),(0,'----')])
+class TitleResultForm(forms.Form):
+    pulldown = forms.ChoiceField(widget=forms.RadioSelect, choices=[])
+    
+    class Meta:
+        model = Title
+        fields = ('tid','title','firstYear','firstMonth','firstEndYear','firstEndMonth','comment')

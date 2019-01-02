@@ -1,13 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from animes.form import SyoboCalTitleSearchForm, TitleRegistForm
+from animes.form import SyoboCalTitleSearchForm, TitleResultForm, TitleListForm
+from animes.models import Title
 from process.SyoboCalProcess import SyoboCalProcess
-from anaconda_navigator.utils.py3compat import request
 
 
 # Create your views here.
 def index(request):
-    return render(request, 'animes/index.html')
+    
+    list = TitleListForm
+    lists = Title.objects.all()
+    
+    return render(request, 'animes/index.html', {'lists': lists})
 
 def openRegist(request):
     search = SyoboCalTitleSearchForm
@@ -16,10 +20,27 @@ def openRegist(request):
 
 def execSearch(request):
         search = SyoboCalTitleSearchForm(request.POST)
-        regist = TitleRegistForm
+        regist = TitleResultForm
+        
         regist.base_fields['pulldown'].choices = []
-        regist.base_fields['pulldown'].choices = SyoboCalProcess.TitleSearch(search.data['keyword'])
+        for obj in SyoboCalProcess.TitleSearch(search.data['keyword']):
+            regist.base_fields['pulldown'].choices.append(obj)
+#         regist.base_fields['pulldown'].choices = SyoboCalProcess.TitleSearch(search.data['keyword'])
         return render(request, 'animes/regist.html',{'SearchForm':search, 'RegistForm':regist})
+
+def execRegist(request):    
+    regist = TitleResultForm(request.POST)
+    data = SyoboCalProcess.GetTitleFull(regist.data['pulldown'])
     
-def execRegist(request):
-    return render(request, 'animes/index.html')
+
+    Title(
+        tid=data['TID'],
+        title=data['Title'],
+        firstYear=data['FirstYear'],
+        firstMonth=data['FirstMonth'],
+        firstEndYear=data['FirstEndYear'],
+        firstEndMonth=data['FirstEndMonth'],
+        comment=data['Comment'],
+    ).save()
+    
+    return redirect('animes:index')

@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<a href="{% url 'animes:OpenRegist' %}">新規登録</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div>
+	<a href="{% url 'animes:OpenRegist' %}">新規登録</a>
+</div>
+<hr>
+<div>
+<table border="1">
+	<thead>
+		<tr>
+			<th>TID</th>
+			<th>TITLE</th>
+			<th>FirstYear</th>
+			<th>FirstMonth</th>
+			<th>FirstEndYear</th>
+			<th>FirstEndMonth</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for list in lists %}
+			<tr>
+				<td>{{ list.tid }}</td>
+				<td><a href="{% url 'animes:OpenDetails' %}?tid={{ list.tid }}">{{ list.title }}</a></td>
+				<td>{{ list.firstYear }}</td>
+				<td>{{ list.firstMonth }}</td>
+				<td>{{ list.firstEndYear }}</td>
+				<td>{{ list.firstEndMonth }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

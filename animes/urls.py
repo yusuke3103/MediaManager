@@ -7,4 +7,5 @@ urlpatterns = [
     path('top', views.openRegist, name='OpenRegist'),
     path('search', views.execSearch, name='ExecSearch'),
     path('regist', views.execRegist, name='ExecRegist'),
+    path('regist', views.execRegist, name="OpenDetails")
 ]
