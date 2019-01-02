@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div>
+	<form action="{% url 'animes:ExecSearch' %}" method="POST">
+		{% csrf_token %} {{ SearchForm }} <input type='submit' value=検索 />
+	</form>
+	<hr>
+	<form action="{% url 'animes:ExecRegist' %}" method="POST">
+		{% csrf_token %}
+		<select name="pulldown">
+			{% for item in items %}
+				<option value="{{ item.tid }}">{{ item.title }}</option>
+			{% endfor %}
+		</select>
+		<input type='submit' value='送信' />
+	</form>
+</div>
+{% endblock %}
