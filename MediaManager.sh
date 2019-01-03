@@ -7,7 +7,7 @@ command=$1
 run(){
 	# eval ”. mmvenv/bin/activate”
 	eval ". mmvenv/bin/activate"
-	eval "nohup python mm/manage.py runserver > /dev/null 2>&1 < /dev/null &"
+	eval "nohup python mm/manage.py runserver 0.0.0.0:8000 > /dev/null 2>&1 < /dev/null &"
 	echo "RUN"
 }
 
