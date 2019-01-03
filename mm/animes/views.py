@@ -46,7 +46,7 @@ def execRegist(request):
     regist = TitleResultForm(request.POST)
     data = SyoboCalProcess().GetTitleFull(regist.data['pulldown'])
 
-    Title(
+    Title.objects.update_or_create(
         tid=data['TID'],
         title=data['Title'],
         firstYear=data['FirstYear'],
@@ -54,7 +54,8 @@ def execRegist(request):
         firstEndYear=data['FirstEndYear'],
         firstEndMonth=data['FirstEndMonth'],
         comment=data['Comment'],
-    ).save()
+        dirPath='/Volumes/HDD2/Videos/' + data['Title'],
+    )
     
     return redirect('animes:index')
 
@@ -87,8 +88,6 @@ def UpdateTitle(request):
 def CreateDirectory(request):
     
     pTid = request.GET['tid']
-    
-    obj = Title.objects.get(tid=pTid)
     
     path = GetDir(pTid)
     
