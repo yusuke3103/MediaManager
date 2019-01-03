@@ -4,7 +4,8 @@
 {% block body %}
 <div>
 	<hr>
-	<a href="{% url 'animes:GetSubTitles' %}?tid={{ tid }}">サブタイトル取得</a>
+	<a href="{% url 'animes:GetSubTitles' %}?tid={{ tid }}">サブタイトル取得</a><br/>
+	<a href="{% url 'animes:NameEditIndex' %}?tid={{ tid }}">ファイル名変更</a><br/>
 	<table border="1">
 		<thead>
 			<tr>

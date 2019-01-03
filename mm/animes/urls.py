@@ -10,4 +10,6 @@ urlpatterns = [
     path('detail', views.openDetail, name="OpenDetails"),
     path('updSub', views.UpdateTitle, name="GetSubTitles"),
     path('CreateDirectory', views.CreateDirectory, name="CreateDirectory"),
+    path('NameEditIndex', views.NameEditIndex, name="NameEditIndex"),
+    path('ExecChangeName', views.ExecChangeName, name="ExecChangeName")
 ]
