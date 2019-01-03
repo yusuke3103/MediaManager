@@ -10,6 +10,7 @@ class Title(models.Model):
     firstEndYear = models.CharField(max_length=4, null=True)
     firstEndMonth = models.CharField(max_length=2, null=True)
     comment = models.CharField(max_length=5000, null=True)
+    dirPath = models.FilePathField(null=True)
 
 class SubTitle(models.Model):
     tid = models.CharField(max_length=4,blank=False)

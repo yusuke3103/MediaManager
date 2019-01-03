@@ -9,4 +9,5 @@ urlpatterns = [
     path('regist', views.execRegist, name='ExecRegist'),
     path('detail', views.openDetail, name="OpenDetails"),
     path('updSub', views.UpdateTitle, name="GetSubTitles"),
+    path('CreateDirectory', views.CreateDirectory, name="CreateDirectory"),
 ]

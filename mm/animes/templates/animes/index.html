@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{% endblock %}
-
+{% block jscript %}
+function CreateDirecotry(tid){
+	location.href = "{% url 'animes:CreateDirectory' %}?tid=" + tid
+}
+{% endblock %}
 {% block body %}
 <div>
 	<a href="{% url 'animes:OpenRegist' %}">新規登録</a>
@@ -17,6 +21,7 @@
 			<th>開始月</th>
 			<th>終了年</th>
 			<th>終了月</th>
+			<th>ディレクトリ</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -28,6 +33,7 @@
 				<td>{{ list.firstMonth }}</td>
 				<td>{{ list.firstEndYear }}</td>
 				<td>{{ list.firstEndMonth }}</td>
+				<td><button onClick="CreateDirecotry({{ list.tid }})">Dir作成</button></td>
 			</tr>
 		{% endfor %}
 	</tbody>

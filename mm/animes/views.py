@@ -1,8 +1,13 @@
+import os.path
+
 from django.shortcuts import render, redirect
 
-from animes.form import SyoboCalTitleSearchForm, TitleResultForm, TitleListForm, DetailForm
+from animes.form import TitleListForm, SyoboCalTitleSearchForm, TitleResultForm
 from animes.models import Title, SubTitle
 from process.SyoboCalProcess import SyoboCalProcess
+
+
+DEBUG = True
 
 
 # Create your views here.
@@ -28,7 +33,6 @@ def execSearch(request):
 #             regist.base_fields['pulldown'].choices.append(obj)
 #         regist.base_fields['pulldown'].choices = SyoboCalProcess.TitleSearch(search.data['keyword'])
 #         return render(request, 'animes/regist.html', {'SearchForm':search, 'RegistForm':regist})
-
 
         result = SyoboCalProcess().TitleSearch(search.data['keyword'])
         return render(request, 'animes/regist.html', {'SearchForm':search, 'items':result})
@@ -70,3 +74,24 @@ def UpdateTitle(request):
 
     list = SubTitle.objects.all().filter(tid=request.GET['tid'])
     return render(request, 'animes/detail.html', {'list' : list, 'tid': request.GET['tid']})   
+
+
+def CreateDirectory(request):
+    
+    pTid = request.GET['tid']
+    
+    obj = Title.objects.get(tid=pTid)
+    
+    path = ''
+    
+    if DEBUG == True:
+        path = obj.dirPath.replace('/Volumes/HDD2/Videos', '/Users/Yusuke/workspace/test')
+    else:
+        path = obj.dirPath
+    
+    print(path)
+    
+    if os.path.exists(path) == False:
+        os.makedirs(path)
+    
+    return redirect('animes:index')
