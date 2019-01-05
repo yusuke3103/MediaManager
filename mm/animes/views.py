@@ -1,14 +1,14 @@
 import glob
 import os.path
-import re
 
 from django.shortcuts import render, redirect
 from django.template.context_processors import request
 
+from animes.business import TitleBusiness, SubTitleBusiness
 from animes.form import TitleListForm, SyoboCalTitleSearchForm, TitleResultForm
 from animes.models import Title, SubTitle
 from process import SyoboCalProcess, FileProcess
-from animes.business import TitleBusiness, SubTitleBusiness
+
 
 # Create your views here.
 def index(request):
@@ -126,5 +126,7 @@ def Repair(request):
         subtitledata = SyoboCalProcess.GetSubTitles(title.tid)
     
         SubTitleBusiness.UpdateOrCreate(title.tid,subtitledata)
+    
+        FileProcess.CreateDirectory(title.tid)
     
     return redirect('animes:index')
