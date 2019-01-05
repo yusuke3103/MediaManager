@@ -10,44 +10,40 @@ import urllib
 from bs4 import BeautifulSoup
 
 
-class SyoboCalProcess:
+def TitleSearch(keyword):
+    BASE_URL = 'http://cal.syoboi.jp/find?sd=0&kw=keyword&ch=&st=&cm=&r=0&rd=&v=0'
+    url = BASE_URL.replace('keyword', urllib.parse.quote(keyword))
     
-    def TitleSearch(self, keyword):
-        BASE_URL = 'http://cal.syoboi.jp/find?sd=0&kw=keyword&ch=&st=&cm=&r=0&rd=&v=0'
-        url = BASE_URL.replace('keyword', urllib.parse.quote(keyword))
-        
-        print(url)
-        
-        res = urllib.request.urlopen(url)
-        
-        soup = BeautifulSoup(res, "html.parser")
-        
-        list = []
-        
-        for a in soup.find_all(href=re.compile("tid")):
-            map = {'tid':a.get('href').replace("/tid/", ""),'title':a.string}
-            list.append(map)
+    print(url)
     
-        return list
+    res = urllib.request.urlopen(url)
+    
+    soup = BeautifulSoup(res, "html.parser")
+    
+    list = []
+    
+    for a in soup.find_all(href=re.compile("tid")):
+        map = {'tid':a.get('href').replace("/tid/", ""),'title':a.string}
+        list.append(map)
 
-    def GetTitleFull(self, tid):
-        BASE_URL = 'http://cal.syoboi.jp/json.php?Req=TitleFull&TID=keyword'
-        url = BASE_URL.replace("keyword", tid)
-        res = urllib.request.urlopen(url)
-        
-        json_dict = json.loads(res.read())
-        
-        result = {}
-        for key in json_dict['Titles'][tid]:
-            result[key] = json_dict['Titles'][tid][key]
-            
-        return result
+    return list
+
+def GetTitleFull(tid):
+    BASE_URL = 'http://cal.syoboi.jp/json.php?Req=TitleFull&TID=keyword'
+    url = BASE_URL.replace("keyword", tid)
+    res = urllib.request.urlopen(url)
     
-    def GetSubTitles(self, tid):
-        BASE_URL = 'http://cal.syoboi.jp/json.php?Req=SubTitles&TID=keyword'
-        url = BASE_URL.replace("keyword", tid)
-        res = urllib.request.urlopen(url)
+    json_dict = json.loads(res.read())
+    
+    json_dict['Titles']
         
-        json_dict = json.loads(res.read())
-        
-        return json_dict['SubTitles'][tid]
+    return json_dict['Titles']
+
+def GetSubTitles(tid):
+    BASE_URL = 'http://cal.syoboi.jp/json.php?Req=SubTitles&TID=keyword'
+    url = BASE_URL.replace("keyword", tid)
+    res = urllib.request.urlopen(url)
+    
+    json_dict = json.loads(res.read())
+    
+    return json_dict['SubTitles'][tid]

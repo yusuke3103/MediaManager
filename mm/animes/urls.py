@@ -9,7 +9,7 @@ urlpatterns = [
     path('regist', views.execRegist, name='ExecRegist'),
     path('detail', views.openDetail, name="OpenDetails"),
     path('updSub', views.UpdateTitle, name="GetSubTitles"),
-    path('CreateDirectory', views.CreateDirectory, name="CreateDirectory"),
     path('NameEditIndex', views.NameEditIndex, name="NameEditIndex"),
-    path('ExecChangeName', views.ExecChangeName, name="ExecChangeName")
+    path('ExecChangeName', views.ExecChangeName, name="ExecChangeName"),
+    path('Repair', views.Repair, name="Repair"),
 ]
