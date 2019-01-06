@@ -37,9 +37,9 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="$cwd/mmvenv"
+CURRENT_DIR=`pwd`
+VIRTUAL_ENV="$CURRENT_DIR/mmvenv"
 export VIRTUAL_ENV
-echo $VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/bin:$PATH"

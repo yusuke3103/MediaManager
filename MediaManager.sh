@@ -1,6 +1,5 @@
 #!/bin/sh
 
-cd `dirname $0`
 CURRENT_DIR=`pwd`
 command=$1
 
