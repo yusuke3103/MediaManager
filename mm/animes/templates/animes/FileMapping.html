@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ form.title }}{% endblock %}
+{% block jscript %}
+{% endblock %}
+{% block body %}
+<div>
+	<h1>{{ form.title }}</h1>
+	
+	<table border="1">
+		<thead>
+			<tr>
+				<th>回</th>
+				<th>サブタイトル</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for sub in form.subtitles %}
+				<tr>
+					<td>{{ sub.rno }}</td>	
+					<td>{{ sub.subtitle }}</td>
+					{% if sub.path == None %}
+					<td>未設定</td>
+					{% else %}
+					<td>再生</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<p>未紐付け</p>
+	<form action="{% url 'animes:ExecMapping' %}" method="POST">
+		<table border="1" style="width: 70%">
+			<thead>
+				<tr>
+					<th style="width: 95%">パス</th>
+					<th style="width: 5%">回</th>
+				</tr>			
+			</thead>
+			<tbody>
+				{% for file in form.files %}
+				<tr>
+					<td><input type="text" readonly="readonly" value="{{ file }}" name="path-{{ forloop.counter }}" style="width: 100%"></td>
+					<td><input type="text" maxlength="2" name="rno-{{ forloop.counter }}" style="width: 100%"></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% csrf_token %}
+		<input type="text" readonly="readonly" hidden="hidden" name="tid" value="{{ form.tid }}">
+		<input type="submit" value="実行">
+	</form>
+{% endblock %}

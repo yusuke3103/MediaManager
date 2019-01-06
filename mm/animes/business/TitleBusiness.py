@@ -19,3 +19,6 @@ def UpdateOrCreate(tid, dic):
         comment=dic[tid]['Comment'],
         dirPath='/Volumes/HDD2/Videos/' + dic[tid]['Title'].replace("/", "／").replace(":","："),
     )
+
+def GetTitle(tid):
+    return Title.objects.get(tid=tid).title

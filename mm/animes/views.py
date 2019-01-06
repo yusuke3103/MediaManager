@@ -8,13 +8,14 @@ from animes.business import TitleBusiness, SubTitleBusiness
 from animes.form import TitleListForm, SyoboCalTitleSearchForm, TitleResultForm
 from animes.models import Title, SubTitle
 from process import SyoboCalProcess, FileProcess
+from process.FileProcess import GetFiles
 
 
 # Create your views here.
 def index(request):
     
     list = TitleListForm
-    lists = Title.objects.all().order_by('firstYear','firstMonth','firstEndYear','firstEndMonth')
+    lists = Title.objects.all().order_by('firstYear', 'firstMonth', 'firstEndYear', 'firstEndMonth')
     
     return render(request, 'animes/index.html', {'lists': lists})
 
@@ -38,11 +39,11 @@ def execRegist(request):
 
     for tid in titledata:
         
-        TitleBusiness.UpdateOrCreate(tid,titledata)
+        TitleBusiness.UpdateOrCreate(tid, titledata)
     
         subtitledata = SyoboCalProcess.GetSubTitles(tid)
     
-        SubTitleBusiness.UpdateOrCreate(tid,subtitledata)
+        SubTitleBusiness.UpdateOrCreate(tid, subtitledata)
     
         FileProcess.CreateDirectory(tid)
         
@@ -64,10 +65,11 @@ def UpdateTitle(request):
     
     subtitledata = SyoboCalProcess.GetSubTitles(tid)
     
-    SubTitleBusiness.UpdateOrCreate(tid,subtitledata)
+    SubTitleBusiness.UpdateOrCreate(tid, subtitledata)
 
     list = SubTitle.objects.all().filter(tid=tid)
     return render(request, 'animes/detail.html', {'list' : list, 'tid': request.GET['tid']})   
+
 
 def NameEditIndex(request):
     pTid = request.GET['tid']
@@ -104,7 +106,6 @@ def ExecChangeName(request):
     pTid = request.POST['tid']
     baseDir = Title.objects.get(tid=pTid).dirPath + "/"
     
-    
     for key in request.POST:
         if "target" in key:
             pRno = key.replace("target-", '')
@@ -117,6 +118,40 @@ def ExecChangeName(request):
             print("変更後：" + baseDir + aftName)
     return redirect('animes:index')
 
+
+def FileMappingIdx(request):
+    
+    tid = request.GET['tid']
+    
+    form = {
+        'tid' : tid,
+        'title' : TitleBusiness.GetTitle(tid),
+        'subtitles' : SubTitleBusiness.GetSubTitles(tid),
+        'files' : FileProcess.GetFiles(tid),
+    }
+    
+    return render(request, 'animes/FileMapping.html', {'form':form})
+
+def ExecMapping(request):
+
+    tid = request.POST['tid']
+    
+    data = []
+    for i in range(int((len(request.POST) - 2) / 2)):
+        key1 = 'path-{cnt}'.format(cnt=i + 1)
+        key2 = 'rno-{cnt}'.format(cnt=i + 1)
+        
+        if request.POST[key2] != '':
+            dic = {}
+            dic['path'] = request.POST[key1]
+            dic['rno'] = request.POST[key2]
+            data.append(dic)
+    
+    if len(data) > 0:
+        SubTitleBusiness.MappingFile(tid, data)
+    
+    return redirect('animes:index')
+
 def Repair(request):
     
     titles = Title.objects.all()
@@ -125,7 +160,7 @@ def Repair(request):
         
         subtitledata = SyoboCalProcess.GetSubTitles(title.tid)
     
-        SubTitleBusiness.UpdateOrCreate(title.tid,subtitledata)
+        SubTitleBusiness.UpdateOrCreate(title.tid, subtitledata)
     
         FileProcess.CreateDirectory(title.tid)
     
